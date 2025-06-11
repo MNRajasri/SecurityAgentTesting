@@ -48,3 +48,13 @@ paths:
           description: Invalid IP format
         '401':
           description: Unauthorized or missing API key
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Key
+
+security:
+  - ApiKeyAuth: []
