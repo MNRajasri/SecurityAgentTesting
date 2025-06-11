@@ -1,0 +1,17 @@
+Descriptor:
+  Name: IPTrustClassifier
+  DisplayName: IP Trust Classifier (AbuseIPDB)
+  Description: Classifies IPs using external threat intelligence (AbuseIPDB)
+  SupportedAuthTypes:
+    - ApiKey
+  Authorization:
+    Type: APIKey
+    Key: Key
+    Location: Header
+    AuthScheme: ''
+    Value: ${ABUSEIPDB_API_KEY}
+
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/MNRajasri/SecurityAgentTesting/main/openapi.yaml
