@@ -1,42 +1,45 @@
-openapi: 3.0.0
-info:
-  title: FirewallRulePatcher
-  description: Applies validated rule changes via NSG/Azure Firewall
-  version: "1.0.0"
-servers:
-  - url: https://yourapi.contoso.com  # Replace with your actual base URL
-paths:
-  /apply-rule:
-    post:
-      operationId: ApplyFirewallRule
-      summary: Apply a validated firewall rule
-      description: >
-        Applies a firewall rule after validation through Copilot agent workflow.
-        #ExamplePrompts Apply rule to allow RDP from 10.0.0.5 to 10.0.1.1
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                sourceIP:
-                  type: string
-                destIP:
-                  type: string
-                protocol:
-                  type: string
-                destPort:
-                  type: integer
-                action:
-                  type: string
-                ruleName:
-                  type: string
-              required: [sourceIP, destIP, protocol, destPort, action, ruleName]
-      responses:
-        '200':
-          description: Rule successfully applied
-        '400':
-          description: Invalid input
-        '401':
-          description: Unauthorized
+name: FirewallRulePatcher
+version: 1.0.0
+publisher: your-org
+description: Applies firewall rule using Azure REST API
+
+SkillGroups:
+  - Format: API
+    Skills:
+      - Name: Apply
+        Description: Applies a validated firewall rule using Azure Function
+        Auth:
+          Type: None
+        InputSchema:
+          Type: object
+          Properties:
+            nsg_name:
+              Type: string
+              Description: Name of the Network Security Group
+            rule_name:
+              Type: string
+              Description: Name of the rule to apply
+            priority:
+              Type: integer
+              Description: Rule priority
+            direction:
+              Type: string
+              Enum: [Inbound, Outbound]
+            access:
+              Type: string
+              Enum: [Allow, Deny]
+            protocol:
+              Type: string
+              Enum: [Tcp, Udp, "*"]
+            source:
+              Type: string
+              Description: Source IP range
+            destination:
+              Type: string
+              Description: Destination IP range
+            port:
+              Type: string
+              Description: Port range
+        Endpoint:
+          Url: https://firerulepatcherfunction.azurewebsites.net/api/applyrule
+          Method: POST
