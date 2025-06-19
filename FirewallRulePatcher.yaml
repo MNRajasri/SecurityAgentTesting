@@ -1,0 +1,11 @@
+Descriptor:
+  Name: FirewallRulePatcher
+  DisplayName: Firewall Rule Patcher
+  Description: Applies validated firewall or NSG rule changes using Azure REST API
+  SupportedAuthTypes:
+    - None
+
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/MNRajasri/SecurityAgentTesting/main/openapi1.yaml
