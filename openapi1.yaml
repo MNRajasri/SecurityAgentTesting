@@ -5,8 +5,7 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: https://firewallrulepatcherfunction.azurewebsites.net
-
+  - url: https://firewallrulepatcherfunction.azurewebsites.net/api/applyrule?code=o6QJUPXQ9PV1aJy7x2CYwOLXpQrt4FlE1GpejgLbgjR5AzFuEKED3Q==
 paths:
   /api/applyrule:
     post:
@@ -14,57 +13,57 @@ paths:
       summary: Applies a firewall rule to an NSG
       description: |
         Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
-      security:
-        - FunctionKey: []
+        #ExamplePrompts Apply firewall rule to block TCP traffic from 10.0.0.0/24 to 20.0.0.0/24 on port 22
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - nsg_name
-                - rule_name
-                - priority
-                - direction
-                - access
-                - protocol
-                - source
-                - destination
-                - port
               properties:
                 nsg_name:
                   type: string
+                  description: Name of the Network Security Group
                 rule_name:
                   type: string
+                  description: Name of the rule to apply
                 priority:
                   type: integer
+                  description: Rule priority (100–4096)
                 direction:
                   type: string
                   enum: [Inbound, Outbound]
+                  description: Direction of traffic
                 access:
                   type: string
                   enum: [Allow, Deny]
+                  description: Access type
                 protocol:
                   type: string
                   enum: [Tcp, Udp, "*"]
+                  description: Protocol to match
                 source:
                   type: string
+                  description: Source IP or range (e.g., 0.0.0.0/0)
                 destination:
                   type: string
+                  description: Destination IP or range
                 port:
-                  type: integer
+                  type: string
+                  description: Port or port range (e.g., "22" or "1000-2000")
       responses:
         '200':
-          description: Rule applied
+          description: Rule applied successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
         '400':
-          description: Invalid input
+          description: Invalid input parameters
         '500':
           description: Server error
-
-components:
-  securitySchemes:
-    FunctionKey:
-      type: apiKey
-      name: code
-      in: query
