@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
   title: Firewall Rule Patcher API
-  description: Applies a validated firewall rule to a specified NSG using Azure Function.
   version: "1.0.0"
+  description: Applies validated firewall rules via Azure Function
 
 servers:
   - url: https://firewallrulepatcherfunction.azurewebsites.net
@@ -10,10 +10,9 @@ servers:
 paths:
   /api/applyrule:
     post:
+      summary: Apply firewall rule
       operationId: ApplyFirewallRule
-      summary: Applies a firewall rule to an NSG
-      description: |
-        Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
+      description: Applies a firewall rule to an NSG
       security:
         - FunctionKey: []
       requestBody:
@@ -41,13 +40,10 @@ paths:
                   type: integer
                 direction:
                   type: string
-                  enum: [Inbound, Outbound]
                 access:
                   type: string
-                  enum: [Allow, Deny]
                 protocol:
                   type: string
-                  enum: [Tcp, Udp, "*"]
                 source:
                   type: string
                 destination:
@@ -56,9 +52,9 @@ paths:
                   type: string
       responses:
         '200':
-          description: Rule applied successfully
+          description: Rule applied
         '400':
-          description: Invalid input
+          description: Bad request
         '500':
           description: Server error
 
