@@ -5,10 +5,12 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: https://firewallrulepatcherfunction.azurewebsites.net
+  - url: https://firewallrulepatcherfunction.azurewebsites.net/api/applyrule
+    description: Azure Function endpoint with function key
+    variables: {}
 
 paths:
-  /api/applyrule:
+  /:
     post:
       operationId: ApplyFirewallRule
       summary: Applies a firewall rule to an NSG
