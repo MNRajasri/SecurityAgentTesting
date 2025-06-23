@@ -11,7 +11,7 @@ paths:
   /api/applyrule:
     post:
       operationId: ApplyFirewallRule
-      summary: Apply firewall rule
+      summary: Applies a firewall rule to an NSG
       security:
         - FunctionKey: []
       requestBody:
@@ -51,14 +51,14 @@ paths:
                 destination:
                   type: string
                 port:
-                  type: integer
+                  type: string
       responses:
         '200':
-          description: Rule applied
+          description: Rule applied successfully
         '400':
-          description: Bad request
+          description: Invalid input
         '500':
-          description: Internal error
+          description: Server error
 
 components:
   securitySchemes:
