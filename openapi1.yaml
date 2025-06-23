@@ -6,7 +6,6 @@ info:
 
 servers:
   - url: https://firewallrulepatcherfunction.azurewebsites.net
-    description: Azure Function base URL
 
 paths:
   /api/applyrule:
@@ -57,7 +56,7 @@ paths:
                   type: integer
       responses:
         '200':
-          description: Rule applied successfully
+          description: Rule applied
         '400':
           description: Invalid input
         '500':
