@@ -1,9 +1,14 @@
 Descriptor:
   Name: FirewallRulePatcher
   DisplayName: Firewall Rule Patcher
-  Description: Applies validated firewall or NSG rule changes using Azure REST API
+  Description: Applies validated firewall or NSG rule changes using Azure Function API
   SupportedAuthTypes:
-    - None
+    - ApiKey
+  Authorization:
+    Type: APIKey
+    Key: x-functions-key
+    Location: Header
+    AuthScheme: ''
 
 SkillGroups:
   - Format: API
