@@ -5,7 +5,7 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: https://FirewallruleEditorFunction.azurewebsites.net/api/ApplyFirewallRule?code=EvniJrhfJBOHqpCKOAovKbEr1u7zjfL6RaXDQCyzqp-3AzFush-jgw==
+  - url: https://firewallrulepatcherfunction.azurewebsites.net/api/applyrule?code=o6QJUPXQ9PV1aJy7x2CYwOLXpQrt4FlE1GpejgLbgjR5AzFuEKED3Q==
 paths:
   /api/applyrule:
     post:
