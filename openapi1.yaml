@@ -14,8 +14,8 @@ paths:
       summary: Applies a firewall rule to an NSG
       description: |
         Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
-        #ExamplePrompts
-        Apply firewall rule to allow TCP traffic from 10.0.0.0/24 to any destination on port 443.
+      security:
+        - FunctionKey: []
       requestBody:
         required: true
         content:
@@ -35,48 +35,36 @@ paths:
               properties:
                 nsg_name:
                   type: string
-                  description: Name of the Network Security Group
                 rule_name:
                   type: string
-                  description: Name of the rule to apply
                 priority:
                   type: integer
-                  description: Rule priority (100–4096)
                 direction:
                   type: string
                   enum: [Inbound, Outbound]
-                  description: Direction of traffic
                 access:
                   type: string
                   enum: [Allow, Deny]
-                  description: Access type
                 protocol:
                   type: string
                   enum: [Tcp, Udp, "*"]
-                  description: Protocol to match
                 source:
                   type: string
-                  description: Source IP or range (e.g., 0.0.0.0/0)
                 destination:
                   type: string
-                  description: Destination IP or range
                 port:
                   type: integer
-                  description: Port or port range (single port for now)
-
       responses:
         '200':
-          description: Rule applied successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
+          description: Rule applied
         '400':
-          description: Invalid input parameters
+          description: Invalid input
         '500':
           description: Server error
+
+components:
+  securitySchemes:
+    FunctionKey:
+      type: apiKey
+      name: code
+      in: query
