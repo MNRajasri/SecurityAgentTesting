@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Firewall Rule Patcher API
   version: "1.0.0"
-  description: Applies validated firewall rules via Azure Function
+  description: Applies firewall rules to NSGs via Azure Function.
 
 servers:
   - url: https://firewallrulepatcherfunction.azurewebsites.net
@@ -10,9 +10,8 @@ servers:
 paths:
   /api/applyrule:
     post:
-      summary: Apply firewall rule
       operationId: ApplyFirewallRule
-      description: Applies a firewall rule to an NSG
+      summary: Apply firewall rule
       security:
         - FunctionKey: []
       requestBody:
@@ -32,35 +31,23 @@ paths:
                 - destination
                 - port
               properties:
-                nsg_name:
-                  type: string
-                rule_name:
-                  type: string
-                priority:
-                  type: integer
-                direction:
-                  type: string
-                access:
-                  type: string
-                protocol:
-                  type: string
-                source:
-                  type: string
-                destination:
-                  type: string
-                port:
-                  type: string
+                nsg_name: { type: string }
+                rule_name: { type: string }
+                priority: { type: integer }
+                direction: { type: string }
+                access: { type: string }
+                protocol: { type: string }
+                source: { type: string }
+                destination: { type: string }
+                port: { type: string }
       responses:
-        '200':
-          description: Rule applied
-        '400':
-          description: Bad request
-        '500':
-          description: Server error
+        '200': { description: Success }
+        '400': { description: Bad input }
+        '500': { description: Server error }
 
 components:
   securitySchemes:
     FunctionKey:
       type: apiKey
-      name: x-functions-key
       in: header
+      name: x-functions-key
