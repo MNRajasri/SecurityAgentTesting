@@ -5,15 +5,14 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: https://firewallrulepatcherfunction.azurewebsites.net
+  - url: https://firewallrulepatcherfunction.azurewebsites.net/api/applyrule
 
 paths:
-  /api/applyrule:
+  /:
     post:
       operationId: ApplyFirewallRule
       summary: Applies a firewall rule to an NSG
-      description: |
-        Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
+      description: Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
       security:
         - FunctionKey: []
       requestBody:
@@ -35,25 +34,34 @@ paths:
               properties:
                 nsg_name:
                   type: string
+                  description: Name of the Network Security Group
                 rule_name:
                   type: string
+                  description: Name of the rule to apply
                 priority:
                   type: integer
+                  description: Rule priority (100–4096)
                 direction:
                   type: string
                   enum: [Inbound, Outbound]
+                  description: Direction of traffic
                 access:
                   type: string
                   enum: [Allow, Deny]
+                  description: Access type
                 protocol:
                   type: string
                   enum: [Tcp, Udp, "*"]
+                  description: Protocol to match
                 source:
                   type: string
+                  description: Source IP or CIDR range (e.g., 0.0.0.0/0)
                 destination:
                   type: string
+                  description: Destination IP or range
                 port:
                   type: string
+                  description: Port or port range (e.g., "22" or "1000-2000")
       responses:
         '200':
           description: Rule applied successfully
