@@ -57,15 +57,6 @@ paths:
       responses:
         '200':
           description: Rule applied successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
         '400':
           description: Invalid input
         '500':
@@ -75,5 +66,5 @@ components:
   securitySchemes:
     FunctionKey:
       type: apiKey
-      in: header
       name: x-functions-key
+      in: header
