@@ -12,7 +12,8 @@ paths:
     post:
       operationId: ApplyFirewallRule
       summary: Applies a firewall rule to an NSG
-      description: Applies a validated firewall rule to a specified NSG.
+      description: |
+        Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
       security:
         - FunctionKey: []
       requestBody:
