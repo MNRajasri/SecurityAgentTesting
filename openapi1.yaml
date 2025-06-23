@@ -5,7 +5,8 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: https://firewallrulepatcherfunction.azurewebsites.net/api/applyrule?code=o6QJUPXQ9PV1aJy7x2CYwOLXpQrt4FlE1GpejgLbgjR5AzFuEKED3Q==
+  - url: https://firewallrulepatcherfunction.azurewebsites.net
+
 paths:
   /api/applyrule:
     post:
@@ -13,13 +14,24 @@ paths:
       summary: Applies a firewall rule to an NSG
       description: |
         Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
-        #ExamplePrompts Apply firewall rule to block TCP traffic from 10.0.0.0/24 to 20.0.0.0/24 on port 22
+        #ExamplePrompts
+        Apply firewall rule to allow TCP traffic from 10.0.0.0/24 to any destination on port 443.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - nsg_name
+                - rule_name
+                - priority
+                - direction
+                - access
+                - protocol
+                - source
+                - destination
+                - port
               properties:
                 nsg_name:
                   type: string
@@ -49,8 +61,9 @@ paths:
                   type: string
                   description: Destination IP or range
                 port:
-                  type: string
-                  description: Port or port range (e.g., "22" or "1000-2000")
+                  type: integer
+                  description: Port or port range (single port for now)
+
       responses:
         '200':
           description: Rule applied successfully
