@@ -3,10 +3,10 @@ info:
   title: IP Trust Classifier
   description: Classifies IP addresses using a threat intelligence feed (e.g., AbuseIPDB)
   version: "1.0.0"
-
+ 
 servers:
   - url: https://api.abuseipdb.com/api/v2
-
+ 
 paths:
   /check:
     get:
@@ -22,11 +22,6 @@ paths:
           schema:
             type: string
           required: true
-        - in: query
-          name: verbose
-          schema:
-            type: boolean
-          required: false
       responses:
         '200':
           description: IP classification result
@@ -48,13 +43,13 @@ paths:
           description: Invalid IP format
         '401':
           description: Unauthorized or missing API key
-
+ 
 components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
       name: Key
-
+ 
 security:
   - ApiKeyAuth: []
