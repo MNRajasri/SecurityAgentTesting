@@ -1,29 +1,30 @@
 openapi: 3.0.1
 info:
   title: IP Trust Classifier
+  description: Classifies IP addresses using a threat intelligence feed (e.g., AbuseIPDB)
   version: "1.0.0"
-  description: Classifies IPs using threat intelligence data
-
+ 
 servers:
   - url: https://api.abuseipdb.com/api/v2
+ 
 paths:
   /check:
-    post:
+    get:
       operationId: IPTrustClassifier
-      summary: Classify an IP address
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                ipAddress:
-                  type: string
-                  example: "8.8.8.8"
+      summary: Classify an IP address as trusted, suspicious, or malicious
+      description: |
+        Looks up an IP address in a threat intelligence database to determine its trust level.
+        #ExamplePrompts Classify the IP 192.168.1.5
+        #ExamplePrompts Is 8.8.8.8 a trusted IP?
+      parameters:
+        - in: query
+          name: ipAddress
+          schema:
+            type: string
+          required: true
       responses:
         '200':
-          description: Classification result
+          description: IP classification result
           content:
             application/json:
               schema:
@@ -33,21 +34,22 @@ paths:
                     type: string
                   classification:
                     type: string
+                    enum: [internal, partner, trusted, suspicious, malicious, unknown]
                   threatScore:
                     type: integer
                   confidence:
                     type: string
         '400':
-          description: Invalid input
+          description: Invalid IP format
         '401':
-          description: Unauthorized
-
+          description: Unauthorized or missing API key
+ 
 components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
       name: Key
-
+ 
 security:
   - ApiKeyAuth: []
