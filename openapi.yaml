@@ -10,7 +10,7 @@ servers:
 paths:
   /check:
     get:
-      operationId: ClassifyIP
+      operationId: IPTrustClassifier
       summary: Classify an IP address as trusted, suspicious, or malicious
       description: |
         Looks up an IP address in a threat intelligence database to determine its trust level.
