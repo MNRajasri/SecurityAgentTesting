@@ -5,8 +5,7 @@ info:
   description: Classifies IPs using threat intelligence data
 
 servers:
-  - url: https://your-function-url.com/api  # Replace with your Azure Function URL
-
+  - url: https://api.abuseipdb.com/api/v2
 paths:
   /check:
     post:
