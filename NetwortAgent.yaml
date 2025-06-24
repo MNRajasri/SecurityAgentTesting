@@ -1,0 +1,22 @@
+Descriptor:
+  Name: NetwortAgent
+  DisplayName: Network Agent
+  Description: Handles alert analysis and response chaining multiple skills
+
+SkillGroups:
+  - Format: Agent
+    Skills:
+      - Name: NetworkAgent
+        DisplayName: Network Agent
+        Description: Handles alert analysis and response
+        Inputs:
+          - Name: src_ip
+            Required: true
+
+        Settings:
+          Instructions: |
+            Step: Call IPTrustClassifier with:
+              - ipAddress = {{ src_ip }}
+
+        ChildSkills:
+          - IPTrustClassifier

@@ -1,0 +1,116 @@
+Descriptor:
+  Name: NetworkAlertAgent
+  DisplayName: Network Flow Agent
+  Description: Handles alert analysis and response chaining multiple skills
+
+SkillGroups:
+  - Format: Agent
+    Skills:
+      - Name: NetworkAlertAgent
+        DisplayName: Network Flow Agent
+        Description: Handles alert analysis and response chaining multiple skills
+        Inputs:
+          - Name: alertId
+            Required: true
+          - Name: src_ip
+            Required: true
+          - Name: dest_ip
+            Required: true
+          - Name: src_port
+            Required: true
+          - Name: dest_port
+            Required: true
+          - Name: protocol
+            Required: true
+          - Name: bytes
+            Required: true
+          - Name: packets
+            Required: true
+          - Name: portUsage_src
+            Required: true
+          - Name: portUsage_dest
+            Required: true
+          - Name: history
+            Required: true
+          - Name: nsg_name
+            Required: true
+          - Name: rule_name
+            Required: true
+          - Name: priority
+            Required: true
+          - Name: direction
+            Required: true
+          - Name: access
+            Required: true
+
+        Settings:
+          Instructions: |
+            Step 1: Call FalsePositiveDetector with:
+              - src_ip
+              - dest_ip
+              - src_port
+              - dest_port
+              - protocol
+              - bytes
+              - packets
+              - portUsage_src
+              - portUsage_dest
+              - history
+
+            Step 2: If the verdict from FalsePositiveDetector is "False Positive", call IPTrustClassifier.ClassifyIP with:
+              - ipAddress = src_ip
+
+            Step 3: If the classification from ClassifyIP is "trusted" or "internal", call RuleRecommender with:
+              - src_ip
+              - dest_ip
+              - src_port
+              - dest_port
+              - protocol
+              - bytes
+              - packets
+              - portUsage_src
+              - portUsage_dest
+              - history
+
+            Step 4: Save the output from RuleRecommender as rulePatch.
+
+            Step 5: If rulePatch is not empty, call FirewallRulePatcher with:
+              - nsg_name
+              - rule_name
+              - priority
+              - direction
+              - access
+              - protocol
+              - source = src_ip
+              - destination = dest_ip
+              - port = dest_port
+
+        ChildSkills:
+          - FalsePositiveDetector
+          - RuleRecommender
+          - IPTrustClassifier
+          - FirewallRulePatcher
+
+
+# Descriptor:
+#   Name: NetworkAlertAgent
+#   DisplayName: Network Flow Agent
+#   Description: Handles alert analysis and response chaining multiple skills
+
+# SkillGroups:
+#   - Format: Agent
+#     Skills:
+#       - Name: NetworkAlertAgent
+#         DisplayName: Network Flow Agent
+#         Description: Handles alert analysis and response chaining multiple skills
+#         Inputs:
+#           - Name: src_ip
+#             Required: true
+
+#         Settings:
+#           Instructions: |
+#             Step: Call IPTrustClassifier with:
+#               - ipAddress = {{ src_ip }}
+
+#         ChildSkills:
+#           - IPTrustClassifier

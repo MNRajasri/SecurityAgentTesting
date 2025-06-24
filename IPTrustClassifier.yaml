@@ -1,16 +1,15 @@
 Descriptor:
   Name: IPTrustClassifier
-  DisplayName: IP Trust Classifier (AbuseIPDB)
-  Description: Classifies IPs using external threat intelligence (AbuseIPDB)
+  DisplayName: IP Trust Classifier
+  Description: Classifies IPs using AbuseIPDB threat intelligence data
   SupportedAuthTypes:
     - ApiKey
   Authorization:
-    Type: APIKey
+    Type: ApiKey
     Key: Key
     Location: Header
-    AuthScheme: ''
-    Value: ${ABUSEIPDB_API_KEY}
-
+    AuthScheme: ''  # AbuseIPDB uses: Key: <API_KEY>
+ 
 SkillGroups:
   - Format: API
     Settings:

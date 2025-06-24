@@ -1,0 +1,54 @@
+{
+  "location": "eastus",
+  "properties": {
+    "dataCollectionEndpointId": "/subscriptions/284cb502-fd11-4ed7-ac3b-42ff25bbf702/resourceGroups/SecurityCopilotAgent/providers/Microsoft.Insights/dataCollectionEndpoints/SecurityAgentDce",
+    "streamDeclarations": {
+      "Custom-NetworkflowCustomLog_CL": {
+        "columns": [
+          { "name": "timestamp", "type": "datetime" },
+          { "name": "sourceIP", "type": "string" },
+          { "name": "destinationIP", "type": "string" },
+          { "name": "sourcePort", "type": "int" },
+          { "name": "destinationPort", "type": "string" },
+          { "name": "protocol", "type": "string" },
+          { "name": "bytes", "type": "int" },
+          { "name": "packets", "type": "int" },
+          { "name": "sourcePortUsage", "type": "string" },
+          { "name": "destinationPortUsage", "type": "string" },
+          { "name": "history", "type": "string" },
+          { "name": "nsg_name", "type": "string" },
+          { "name": "rule_name", "type": "string" },
+          { "name": "priority", "type": "int" },
+          { "name": "direction", "type": "string" },
+          { "name": "access", "type": "string" }
+        ]
+      }
+    },
+    "dataSources": {
+      "logFiles": [
+        {
+          "name": "NetworkflowLogSource",
+          "streams": ["Custom-NetworkflowCustomLog_CL"],
+          "filePatterns": ["/var/log/networkflow.log"],
+          "format": "json"
+        }
+      ]
+    },
+    "destinations": {
+      "logAnalytics": [
+        {
+          "name": "workspaceDest",
+          "workspaceResourceId": "/subscriptions/284cb502-fd11-4ed7-ac3b-42ff25bbf702/resourceGroups/SecurityCopilotAgent/providers/Microsoft.OperationalInsights/workspaces/SecurityAgentLogWorkspace"
+        }
+      ]
+    },
+    "dataFlows": [
+      {
+        "streams": ["Custom-NetworkflowCustomLog_CL"],
+        "outputStream": "Custom-NetworkflowCustomLog_CL",
+        "transformKql": "source\n| extend TimeGenerated = todatetime(timestamp)\n",
+        "destinations": ["workspaceDest"]
+      }
+    ]
+  }
+}

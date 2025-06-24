@@ -1,0 +1,76 @@
+Descriptor:
+  Name: NetworkSecurityAgent
+  DisplayName: Network Security Agent
+  Description: Analyze the network flow data base on the below child skills.
+
+SkillGroups:
+  - Format: GPT
+    Skills:
+      - Name: FalsePositiveDetector
+        DisplayName: False Positive Alert Detector
+        Description: Detects false positive alerts in network traffic using AI analysis.
+        Inputs:
+          - Name: alertData
+            Description: Alert details including NetFlow, port usage, and history
+        Settings:
+          ModelName: gpt-4o
+          Template: |-
+            You are a network security analyst AI. Given the alert data below,
+            including NetFlow, port usage, and historical patterns, determine
+            if the alert is a false positive. Provide a confidence score and explanation.
+ 
+            Alert Data:
+            {{alertData}}
+ 
+            Output format:
+            - verdict: False Positive / True Alert
+            - confidence: 0-100%
+            - explanation: brief reasoning
+
+  - Format: GPT
+    Skills:
+      - Name: RuleRecommender
+        DisplayName: Firewall Rule Recommender
+        Description: Suggests firewall or traffic rule updates based on alerts and classifications.
+        Inputs:
+          - Name: contextData
+            Description: Context including detected alerts, IP classifications, and traffic patterns
+        Settings:
+          ModelName: gpt-4o
+          Template: |-
+            As a network security engineer AI, analyze the following context and recommend
+            firewall or traffic rule updates that optimize security while minimizing disruptions.
+
+            Context:
+            {{contextData}}
+
+            Provide recommendations in a structured format with rule details.
+
+  - Format: Agent
+    Skills:
+      - Name: NetworkAlertAgent
+        DisplayName: Network Alert Agent
+        Description: Runs all skills in order to triage and patch false positive alerts.
+        Inputs:
+          - Name: alertId
+            Description: Unique identifier for the alert
+            Required: true
+          - Name: sourceIP
+            Description: Source IP address
+            Required: true
+          - Name: port
+            Description: Port involved in the alert
+            Required: true
+        Settings:
+          Instructions: |
+            You are a network alert triage agent. Given a network alert (alertId, sourceIP, port):
+            1. Use FalsePositiveDetector to determine if the alert is a false positive.
+            2. If true, use IPTrustClassifier to check trust category.
+            3. If IP is Trusted or Internal, call RuleRecommender.
+            4. If RuleRecommender returns a rulePatch, call FirewallRulePatcher to apply it.
+            Use all tools in sequence and report results.
+        ChildSkills:
+          - FalsePositiveDetector
+          - IPTrustClassifier
+          - RuleRecommender
+          - FirewallRulePatcher

@@ -1,0 +1,21 @@
+[
+  {
+    "timestamp": "2025-06-18T10:30:00Z",
+    "sourceIP": "192.168.1.1",
+    "destinationIP": "10.0.0.5",
+    "sourcePort": 443,
+    "destinationPort": "80",
+    "protocol": "TCP",
+    "bytes": 1024,
+    "packets": 12,
+    "sourcePortUsage": "HTTPS",
+    "destinationPortUsage": "HTTP",
+    "history": "Allowed",
+    "nsg_name": "TestNSG",
+    "rule_name": "Allow_HTTP",
+    "priority": 100,
+    "direction": "Inbound",
+    "access": "Allow"
+  }
+]
+

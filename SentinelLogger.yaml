@@ -1,0 +1,55 @@
+Descriptor:
+  Name: SentinelLogger
+  DisplayName: Sentinel Logging Skill
+  Description: Logs structured alert decisions into Sentinel
+
+  Settings:
+    - Name: TenantId
+      Required: true
+    - Name: WorkspaceName
+      Required: true
+    - Name: SubscriptionId
+      Required: true
+    - Name: ResourceGroupName
+      Required: true
+  SupportedAuthTypes:
+    - None
+
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: LogAlertDecision
+        DisplayName: Log Alert Decision
+        Description: Logs a security alert verdict and metadata to Sentinel
+        Inputs:
+          - Name: alertId
+            Description: ID of the alert
+            Required: true
+          - Name: sourceIP
+            Description: Source IP of the alert
+            Required: true
+          - Name: verdict
+            Description: Verdict on the alert
+            Required: true
+          - Name: confidence
+            Description: Confidence score (0–100)
+            Required: true
+          - Name: recommendation
+            Description: Suggested action or rule update
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: '{{TenantId}}'
+          SubscriptionId: '{{SubscriptionId}}'
+          ResourceGroupName: '{{ResourceGroupName}}'
+          WorkspaceName: '{{WorkspaceName}}'
+          Template: |-
+            let alertId = '{{alertId}}';
+            let sourceIP = '{{sourceIP}}';
+            let verdict = '{{verdict}}';
+            let confidence = toint('{{confidence}}');
+            let recommendation = '{{recommendation}}';
+            datatable(AlertId:string, SourceIP:string, Verdict:string, Confidence:int, Recommendation:string)
+            [
+              alertId, sourceIP, verdict, confidence, recommendation
+            ]

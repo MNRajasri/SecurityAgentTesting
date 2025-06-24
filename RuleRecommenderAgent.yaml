@@ -1,0 +1,29 @@
+Descriptor:
+  Name: RuleRecommenderAgent
+  DisplayName: Rule Recommender Agent
+  Description: >
+    An autonomous AI security agent that detects false positive alerts
+    from network traffic using NetFlow data, port usage, and historical patterns.
+    It suggests or auto-applies firewall and traffic rule updates,
+    leveraging child skills for IP classification, alert validation, and rule editing.
+    Final rule changes require human network engineer approval.
+
+SkillGroups:
+  - Format: GPT
+    Skills:
+      - Name: RuleRecommender
+        DisplayName: Firewall Rule Recommender
+        Description: Suggests firewall or traffic rule updates based on alerts and classifications.
+        Inputs:
+          - Name: contextData
+            Description: Context including detected alerts, IP classifications, and traffic patterns
+        Settings:
+          ModelName: gpt-4o
+          Template: |-
+            As a network security engineer AI, analyze the following context and recommend
+            firewall or traffic rule updates that optimize security while minimizing disruptions.
+
+            Context:
+            {{contextData}}
+
+            Provide recommendations in a structured format with rule details.

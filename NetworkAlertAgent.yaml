@@ -1,0 +1,91 @@
+Descriptor:
+  Name: NetworkAlertAgent
+  DisplayName: Network Flow Agent
+  Description: Handles alert analysis and response chaining multiple skills
+
+SkillGroups:
+  - Format: Agent
+    Skills:
+      - Name: NetworkAlertAgent
+        DisplayName: Network Flow Agent
+        Description: Handles alert analysis and response using multiple skills
+        Inputs:
+          - Name: alertId
+            Required: true
+          - Name: src_ip
+            Required: true
+          - Name: dest_ip
+            Required: true
+          - Name: src_port
+            Required: true
+          - Name: dest_port
+            Required: true
+          - Name: protocol
+            Required: true
+          - Name: bytes
+            Required: true
+          - Name: packets
+            Required: true
+          - Name: portUsage_src
+            Required: true
+          - Name: portUsage_dest
+            Required: true
+          - Name: history
+            Required: true
+          - Name: nsg_name
+            Required: true
+          - Name: rule_name
+            Required: true
+          - Name: priority
+            Required: true
+          - Name: direction
+            Required: true
+          - Name: access
+            Required: true
+
+        Settings:
+          Instructions: |
+            Step 1: Call FalsePositiveDetector with:
+              - src_ip
+              - dest_ip
+              - src_port
+              - dest_port
+              - protocol
+              - bytes
+              - packets
+              - portUsage_src
+              - portUsage_dest
+              - history
+
+            Step 2: Call IPTrustClassifier with:
+              - ipAddress = src_ip
+
+            Step 3: Call RuleRecommender with:
+              - src_ip
+              - dest_ip
+              - src_port
+              - dest_port
+              - protocol
+              - bytes
+              - packets
+              - portUsage_src
+              - portUsage_dest
+              - history
+
+            Step 4: Call FirewallRulePatcher with:
+              - nsg_name
+              - rule_name
+              - priority
+              - direction
+              - access
+              - protocol
+              - source = src_ip
+              - destination = dest_ip
+              - port = dest_port
+
+
+        ChildSkills:
+          - FalsePositiveDetector
+          - IPTrustClassifier
+          - RuleRecommender
+          - FirewallRulePatcher

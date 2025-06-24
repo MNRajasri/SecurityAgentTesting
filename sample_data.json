@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "schema": {
+      "columns": [
+        { "name": "TimeGenerated", "type": "datetime" },
+        { "name": "sourceIP", "type": "string" },
+        { "name": "destinationIP", "type": "string" },
+        { "name": "sourcePort", "type": "int" },
+        { "name": "destinationPort", "type": "string" },
+        { "name": "protocol", "type": "string" },
+        { "name": "bytes", "type": "int" },
+        { "name": "packets", "type": "int" },
+        { "name": "sourcePortUsage", "type": "string" },
+        { "name": "destinationPortUsage", "type": "string" },
+        { "name": "history", "type": "string" },
+        { "name": "nsg_name", "type": "string" },
+        { "name": "rule_name", "type": "string" },
+        { "name": "priority", "type": "int" },
+        { "name": "direction", "type": "string" },
+        { "name": "access", "type": "string" }
+      ]
+    },
+    "retentionInDays": 30,
+    "description": "Custom networkflow logs for Security Copilot agent"
+  }
+}
