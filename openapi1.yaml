@@ -33,7 +33,7 @@ paths:
               properties:
                 nsg_name: { type: string }
                 rule_name: { type: string }
-                priority: { type: string }
+                priority: { type: integer }
                 direction: { type: string }
                 access: { type: string }
                 protocol: { type: string }
