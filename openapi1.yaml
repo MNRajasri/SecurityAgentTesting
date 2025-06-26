@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
   title: Firewall Rule Patcher API
+  description: Applies a validated firewall rule to a specified NSG using Azure Function.
   version: "1.0.0"
-  description: Applies firewall rules to NSGs via Azure Function.
 
 servers:
   - url: https://firewallrulepatcherfunction.azurewebsites.net
@@ -11,7 +11,9 @@ paths:
   /api/applyrule:
     post:
       operationId: ApplyFirewallRule
-      summary: Apply firewall rule
+      summary: Applies a firewall rule to an NSG
+      description: |
+        Applies a validated firewall rule to a specified Network Security Group (NSG) using Azure Function.
       security:
         - FunctionKey: []
       requestBody:
@@ -23,7 +25,6 @@ paths:
               required:
                 - nsg_name
                 - rule_name
-                - priority
                 - direction
                 - access
                 - protocol
@@ -31,23 +32,36 @@ paths:
                 - destination
                 - port
               properties:
-                nsg_name: { type: string }
-                rule_name: { type: string }
-                priority: { type: integer }
-                direction: { type: string }
-                access: { type: string }
-                protocol: { type: string }
-                source: { type: string }
-                destination: { type: string }
-                port: { type: string }
+                nsg_name:
+                  type: string
+                rule_name:
+                  type: string
+                direction:
+                  type: string
+                  enum: [Inbound, Outbound]
+                access:
+                  type: string
+                  enum: [Allow, Deny]
+                protocol:
+                  type: string
+                  enum: [Tcp, Udp, "*"]
+                source:
+                  type: string
+                destination:
+                  type: string
+                port:
+                  type: string
       responses:
-        '200': { description: Success }
-        '400': { description: Bad input }
-        '500': { description: Server error }
+        '200':
+          description: Rule applied successfully
+        '400':
+          description: Invalid input
+        '500':
+          description: Server error
 
 components:
   securitySchemes:
     FunctionKey:
       type: apiKey
-      in: header
       name: x-functions-key
+      in: header
